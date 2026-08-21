@@ -1,0 +1,1117 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>FRAGMENT — Protocole d'extraction neurale</title>
+<meta name="description" content="FRAGMENT est le premier établissement agréé d'extraction et de valorisation de souvenirs. Procédure indolore. Résultats irréversibles.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@300;400;500&family=EB+Garamond:ital,wght@0,400;0,500;0,600;0,700;0,800;1,400&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
+:root{
+--bg:#F5F5F0;
+--bg-alt:#EBEBE5;
+--text:#1A1A1A;
+--text-muted:#8A8A86;
+--accent:#D4384A;
+--accent-hover:#B82E3E;
+--border:#D4D4D0;
+--border-light:#E5E5E0;
+--card-bg:#FFFFFF;
+--surface:#FAFAF5;
+--shadow:0 1px 3px rgba(0,0,0,0.04),0 1px 2px rgba(0,0,0,0.06);
+--shadow-lg:0 4px 12px rgba(0,0,0,0.06),0 2px 4px rgba(0,0,0,0.04);
+--font-display:'EB Garamond',Georgia,serif;
+--font-body:'Inter',system-ui,sans-serif;
+--font-mono:'DM Mono',monospace;
+--ekg:#D4384A;
+--ekg-glow:0 0 6px rgba(212,56,74,0.3);
+}
+html{scroll-behavior:smooth}
+body{
+font-family:var(--font-body);
+background:var(--bg);
+color:var(--text);
+line-height:1.7;
+overflow-x:hidden;
+-webkit-font-smoothing:antialiased;
+-moz-osx-font-smoothing:grayscale;
+text-rendering:optimizeLegibility;
+font-variant-numeric:tabular-nums
+}
+::selection{background:var(--accent);color:#fff}
+a{color:inherit;text-decoration:none}
+
+/* ─── NAV ─── */
+nav{
+position:fixed;
+top:0;left:0;right:0;
+z-index:100;
+padding:1.25rem 3rem;
+display:flex;
+justify-content:space-between;
+align-items:center;
+background:rgba(245,245,240,0.92);
+backdrop-filter:blur(12px);
+-webkit-backdrop-filter:blur(12px);
+border-bottom:1px solid var(--border-light);
+font-size:0.75rem;
+text-transform:uppercase;
+letter-spacing:0.12em
+}
+nav .logo{
+font-family:var(--font-display);
+font-weight:700;
+font-size:1.1rem;
+letter-spacing:0.3em;
+text-transform:uppercase;
+color:var(--text)
+}
+nav .logo span{color:var(--accent)}
+nav .nav-links{display:flex;gap:2.5rem;align-items:center}
+nav .nav-links a{color:var(--text-muted);transition:color 0.3s}
+nav .nav-links a:hover{color:var(--text)}
+.nav-cta{
+padding:0.5rem 1.25rem;
+border:1px solid var(--accent);
+border-radius:2px;
+color:var(--accent)!important;
+transition:background 0.3s,color 0.3s!important;
+font-weight:500
+}
+.nav-cta:hover{background:var(--accent);color:#fff!important}
+.nav-ref{
+font-family:var(--font-mono);
+font-size:0.6rem;
+color:var(--text-muted);
+letter-spacing:0.05em;
+border-left:1px solid var(--border);
+padding-left:1rem
+}
+
+/* ─── HERO ─── */
+.hero{
+position:relative;
+min-height:100vh;
+display:flex;
+flex-direction:column;
+justify-content:center;
+align-items:center;
+padding:8rem 2rem 0;
+overflow:hidden;
+background:var(--bg)
+}
+.hero-inner{
+position:relative;
+z-index:1;
+max-width:780px;
+margin:0 auto;
+text-align:center
+}
+.hero-badge{
+display:inline-flex;
+align-items:center;
+gap:0.5rem;
+font-family:var(--font-mono);
+font-size:0.55rem;
+letter-spacing:0.2em;
+text-transform:uppercase;
+color:var(--text-muted);
+border:1px solid var(--border);
+padding:0.35rem 0.8rem;
+margin-bottom:2.5rem
+}
+.hero-badge-dot{
+width:5px;height:5px;
+border-radius:50%;
+background:var(--accent);
+animation:pulse-dot 1.5s ease-in-out infinite
+}
+@keyframes pulse-dot{
+0%,100%{opacity:1}
+50%{opacity:0.3}
+}
+.hero-title{
+font-family:var(--font-display);
+font-weight:700;
+font-size:clamp(2.8rem,6vw,5.5rem);
+line-height:1.05;
+color:var(--text);
+margin-bottom:1.25rem;
+letter-spacing:-0.02em
+}
+.hero-title em{
+font-style:italic;
+color:var(--accent)
+}
+.hero-sub{
+font-size:clamp(0.95rem,1.5vw,1.15rem);
+color:var(--text-muted);
+max-width:520px;
+margin:0 auto 2.5rem;
+line-height:1.7;
+font-weight:400
+}
+.hero-actions{display:flex;gap:1rem;justify-content:center;flex-wrap:wrap}
+.btn{
+position:relative;
+display:inline-flex;
+align-items:center;
+gap:0.5rem;
+padding:0.85rem 2rem;
+font-family:var(--font-body);
+font-size:0.8rem;
+font-weight:500;
+text-transform:uppercase;
+letter-spacing:0.1em;
+cursor:pointer;
+transition:all 0.3s ease;
+border:none;
+white-space:nowrap
+}
+.btn-primary{
+background:var(--accent);
+color:#fff;
+border-radius:2px
+}
+.btn-primary:hover{
+background:var(--accent-hover);
+transform:translateY(-1px)
+}
+.btn-secondary{
+background:transparent;
+color:var(--text);
+border:1px solid var(--border);
+border-radius:2px
+}
+.btn-secondary:hover{
+border-color:var(--text);
+background:rgba(0,0,0,0.02);
+transform:translateY(-1px)
+}
+
+/* ─── EKG STRIP ─── */
+.ekg-strip{
+width:100%;
+margin-top:6rem;
+position:relative;
+z-index:1;
+border-top:1px solid var(--border-light)
+}
+.ekg-strip canvas{
+display:block;
+width:100%;
+height:60px;
+background:var(--bg)
+}
+.ekg-footer{
+display:flex;
+justify-content:space-between;
+align-items:center;
+padding:0.5rem 3rem 1rem;
+font-family:var(--font-mono);
+font-size:0.55rem;
+color:var(--text-muted);
+text-transform:uppercase;
+letter-spacing:0.1em;
+border-bottom:1px solid var(--border-light)
+}
+.ekg-footer span:last-child{color:var(--accent)}
+
+/* ─── SECTION BASE ─── */
+section{padding:7rem 2rem;position:relative}
+.container{max-width:1100px;margin:0 auto;position:relative;z-index:1}
+.section-label{
+display:inline-flex;
+align-items:center;
+gap:0.5rem;
+font-family:var(--font-mono);
+font-size:0.55rem;
+letter-spacing:0.2em;
+text-transform:uppercase;
+color:var(--text-muted);
+margin-bottom:1rem
+}
+.section-label::before{
+content:'';
+width:2px;height:12px;
+background:var(--accent)
+}
+.section-title{
+font-family:var(--font-display);
+font-weight:700;
+font-size:clamp(1.8rem,3.5vw,3rem);
+line-height:1.15;
+margin-bottom:1rem;
+color:var(--text)
+}
+.section-sub{
+font-size:0.95rem;
+color:var(--text-muted);
+max-width:560px;
+line-height:1.8;
+font-weight:400
+}
+.section-sub strong{color:var(--text);font-weight:500}
+
+/* ─── REVEAL ─── */
+[data-reveal]{
+opacity:0;
+transform:translateY(24px);
+transition:opacity 0.7s cubic-bezier(0.16,1,0.3,1),transform 0.7s cubic-bezier(0.16,1,0.3,1)
+}
+[data-reveal].revealed{opacity:1;transform:translateY(0)}
+[data-reveal-stagger] > *{
+opacity:0;
+transform:translateY(20px);
+transition:opacity 0.5s cubic-bezier(0.16,1,0.3,1),transform 0.5s cubic-bezier(0.16,1,0.3,1)
+}
+[data-reveal-stagger].revealed > *:nth-child(1){transition-delay:0s}
+[data-reveal-stagger].revealed > *:nth-child(2){transition-delay:0.08s}
+[data-reveal-stagger].revealed > *:nth-child(3){transition-delay:0.16s}
+[data-reveal-stagger].revealed > *:nth-child(4){transition-delay:0.24s}
+[data-reveal-stagger].revealed > *:nth-child(5){transition-delay:0.32s}
+[data-reveal-stagger].revealed > *:nth-child(6){transition-delay:0.4s}
+[data-reveal-stagger].revealed > *{opacity:1;transform:translateY(0)}
+
+/* ─── MARKET ─── */
+.market{
+background:var(--bg-alt);
+padding:6rem 2rem;
+border-top:1px solid var(--border-light);
+border-bottom:1px solid var(--border-light)
+}
+.market-grid{
+display:grid;
+grid-template-columns:repeat(3,1fr);
+gap:1.5rem;
+margin-top:2.5rem
+}
+.stat-card{
+background:var(--card-bg);
+border:1px solid var(--border-light);
+padding:2rem;
+box-shadow:var(--shadow);
+text-align:center;
+transition:box-shadow 0.3s
+}
+.stat-card:hover{box-shadow:var(--shadow-lg)}
+.stat-value{
+font-family:var(--font-display);
+font-weight:700;
+font-size:clamp(2rem,3.5vw,2.8rem);
+color:var(--text);
+margin-bottom:0.15rem
+}
+.stat-unit{
+font-family:var(--font-mono);
+font-size:0.65rem;
+color:var(--text-muted);
+display:block;
+letter-spacing:0.05em;
+margin-bottom:0.75rem
+}
+.stat-label{
+font-size:0.75rem;
+color:var(--text-muted);
+text-transform:uppercase;
+letter-spacing:0.08em;
+margin-bottom:0.5rem
+}
+.stat-change{
+font-family:var(--font-mono);
+font-size:0.7rem;
+display:inline-flex;
+align-items:center;
+gap:0.25rem;
+padding:0.15rem 0.5rem;
+background:var(--bg-alt);
+border:1px solid var(--border-light)
+}
+.stat-change.up{color:var(--accent);border-color:rgba(212,56,74,0.15);background:rgba(212,56,74,0.04)}
+.stat-change.down{color:var(--text-muted);border-color:var(--border-light)}
+
+/* ─── CATALOGUE ─── */
+.catalogue{background:var(--bg)}
+.filter-bar{
+display:flex;
+gap:0.25rem;
+margin-bottom:2.5rem;
+flex-wrap:wrap
+}
+.filter-btn{
+padding:0.4rem 1rem;
+border:1px solid var(--border-light);
+background:transparent;
+color:var(--text-muted);
+font-family:var(--font-mono);
+font-size:0.65rem;
+text-transform:uppercase;
+letter-spacing:0.1em;
+cursor:pointer;
+transition:all 0.3s;
+border-radius:0
+}
+.filter-btn:hover{color:var(--text);border-color:var(--border)}
+.filter-btn.active{background:var(--text);color:#fff;border-color:var(--text)}
+.grid-products{
+display:grid;
+grid-template-columns:repeat(auto-fill,minmax(300px,1fr));
+gap:1px;
+background:var(--border-light)
+}
+.product-card{
+background:var(--card-bg);
+padding:1.75rem;
+position:relative;
+transition:background 0.3s;
+cursor:default
+}
+.product-card:hover{background:var(--surface)}
+.product-ref{
+font-family:var(--font-mono);
+font-size:0.55rem;
+color:var(--text-muted);
+letter-spacing:0.05em;
+margin-bottom:0.5rem
+}
+.product-category{
+font-family:var(--font-mono);
+font-size:0.55rem;
+text-transform:uppercase;
+letter-spacing:0.15em;
+color:var(--text-muted);
+margin-bottom:0.5rem
+}
+.product-name{
+font-family:var(--font-display);
+font-weight:600;
+font-size:1.2rem;
+margin-bottom:0.5rem;
+line-height:1.3
+}
+.product-rating{
+display:flex;
+gap:0.1rem;
+margin-bottom:0.75rem
+}
+.star{color:var(--border);font-size:0.7rem}
+.star.filled{color:#1A1A1A}
+.product-footer{
+display:flex;
+justify-content:space-between;
+align-items:center;
+padding-top:0.75rem;
+border-top:1px solid var(--border-light);
+margin-top:0.5rem
+}
+.product-price{
+font-family:var(--font-mono);
+font-weight:500;
+font-size:1.1rem;
+color:var(--accent)
+}
+.product-price span{
+font-weight:400;
+color:var(--text-muted);
+font-size:0.7rem
+}
+.product-trend{
+font-family:var(--font-mono);
+font-size:0.6rem;
+padding:0.15rem 0.4rem;
+border:1px solid var(--border-light)
+}
+.product-trend.up{color:var(--accent);border-color:rgba(212,56,74,0.2)}
+.product-trend.down{color:var(--text-muted);border-color:var(--border-light)}
+.product-badge{
+display:inline-block;
+font-family:var(--font-mono);
+font-size:0.5rem;
+letter-spacing:0.1em;
+padding:0.2rem 0.5rem;
+margin-bottom:0.75rem;
+text-transform:uppercase
+}
+.product-badge.epuise{background:rgba(212,56,74,0.06);color:var(--accent);border:1px solid rgba(212,56,74,0.15)}
+.product-badge.encheres{background:rgba(26,26,26,0.04);color:var(--text);border:1px solid var(--border)}
+
+/* ─── HOW ─── */
+.how{
+background:var(--bg-alt);
+border-top:1px solid var(--border-light);
+border-bottom:1px solid var(--border-light)
+}
+.steps-grid{
+display:grid;
+grid-template-columns:repeat(3,1fr);
+gap:2.5rem;
+margin-top:2.5rem
+}
+.step{
+position:relative;
+padding-top:2.5rem;
+border-top:1px solid var(--border)
+}
+.step-number{
+font-family:var(--font-mono);
+font-size:0.55rem;
+color:var(--text-muted);
+text-transform:uppercase;
+letter-spacing:0.2em;
+margin-bottom:1rem
+}
+.step-title{
+font-family:var(--font-display);
+font-weight:600;
+font-size:1.3rem;
+margin-bottom:0.75rem
+}
+.step-title em{font-style:italic;color:var(--accent)}
+.step-desc{
+font-size:0.85rem;
+color:var(--text-muted);
+line-height:1.8
+}
+
+/* ─── SPLIT ─── */
+.split{
+display:grid;
+grid-template-columns:1fr 1fr;
+position:relative;
+overflow:hidden
+}
+.split-half{
+padding:5rem 4rem;
+display:flex;
+flex-direction:column;
+justify-content:center;
+position:relative;
+border-bottom:1px solid var(--border-light)
+}
+.split-buyer{background:var(--card-bg)}
+.split-seller{background:var(--surface);border-left:1px solid var(--border-light)}
+.split-label{
+font-family:var(--font-mono);
+font-size:0.5rem;
+letter-spacing:0.2em;
+text-transform:uppercase;
+color:var(--text-muted);
+margin-bottom:1.5rem;
+padding:0.25rem 0.5rem;
+border:1px solid var(--border-light);
+display:inline-block
+}
+.split-id{
+font-family:var(--font-mono);
+font-size:0.55rem;
+color:var(--text-muted);
+margin-bottom:0.5rem;
+letter-spacing:0.05em
+}
+.split-quote{
+font-family:var(--font-display);
+font-weight:600;
+font-size:clamp(1.1rem,1.8vw,1.5rem);
+line-height:1.5;
+margin-bottom:1rem;
+color:var(--text);
+quotes:"\201c""\201d""\2018""\2019"
+}
+.split-quote::before{content:open-quote;color:var(--accent);font-size:2em;line-height:0;vertical-align:-0.35em;margin-right:0.15em}
+.split-meta{
+font-family:var(--font-mono);
+font-size:0.6rem;
+color:var(--text-muted);
+margin-bottom:1.5rem
+}
+.split-metric{
+font-family:var(--font-display);
+font-weight:700;
+font-size:2rem;
+margin-bottom:0.1rem
+}
+.split-buyer .split-metric{color:var(--accent)}
+.split-seller .split-metric{color:var(--text-muted)}
+.split-metric-label{
+font-family:var(--font-mono);
+font-size:0.55rem;
+text-transform:uppercase;
+letter-spacing:0.1em;
+color:var(--text-muted)
+}
+
+/* ─── TICKER ─── */
+.ticker-section{
+padding:3rem 0;
+overflow:hidden;
+border-bottom:1px solid var(--border-light);
+background:var(--card-bg)
+}
+.ticker-header{
+padding:0 3rem 1rem;
+display:flex;
+justify-content:space-between;
+align-items:center
+}
+.ticker-header h3{
+font-family:var(--font-mono);
+font-size:0.55rem;
+letter-spacing:0.2em;
+text-transform:uppercase;
+color:var(--text-muted)
+}
+.ticker-header h3 span{color:var(--accent)}
+.ticker-header .ticker-count{
+font-family:var(--font-mono);
+font-size:0.55rem;
+color:var(--text-muted);
+letter-spacing:0.05em
+}
+.ticker-wrap{
+overflow:hidden;
+width:100%;
+position:relative;
+border-top:1px solid var(--border-light);
+border-bottom:1px solid var(--border-light)
+}
+.ticker-track{
+display:flex;
+gap:3rem;
+white-space:nowrap;
+animation:ticker-scroll 40s linear infinite;
+width:max-content;
+padding:0.6rem 0
+}
+.ticker-item{
+display:inline-flex;
+align-items:center;
+gap:0.5rem;
+font-family:var(--font-mono);
+font-size:0.65rem;
+color:var(--text-muted)
+}
+.ticker-item .price{color:var(--accent);font-weight:500}
+.ticker-item .sep{color:var(--border)}
+@keyframes ticker-scroll{
+0%{transform:translateX(0)}
+100%{transform:translateX(-50%)}
+}
+
+/* ─── CTA ─── */
+.cta-section{
+padding:8rem 2rem;
+text-align:center;
+background:var(--bg);
+position:relative
+}
+.cta-section::before{
+content:'';
+position:absolute;
+top:0;left:50%;
+transform:translateX(-50%);
+width:200px;height:1px;
+background:var(--accent)
+}
+.cta-title{
+font-family:var(--font-display);
+font-weight:700;
+font-size:clamp(1.8rem,4vw,3.2rem);
+line-height:1.15;
+margin-bottom:1rem
+}
+.cta-sub{
+font-size:0.9rem;
+color:var(--text-muted);
+margin-bottom:2.5rem;
+max-width:450px;
+margin-left:auto;
+margin-right:auto;
+line-height:1.7
+}
+.btn-cta{
+position:relative;
+display:inline-flex;
+align-items:center;
+gap:0.75rem;
+padding:1rem 2.5rem;
+border:1px solid var(--text);
+background:var(--text);
+color:#fff;
+font-family:var(--font-body);
+font-weight:500;
+font-size:0.8rem;
+letter-spacing:0.1em;
+text-transform:uppercase;
+cursor:pointer;
+transition:all 0.3s ease
+}
+.btn-cta:hover{
+background:transparent;
+color:var(--text)
+}
+.cta-disclaimer{
+margin-top:2rem;
+font-family:var(--font-mono);
+font-size:0.5rem;
+color:var(--text-muted);
+max-width:400px;
+margin-left:auto;
+margin-right:auto;
+line-height:1.8
+}
+
+/* ─── FOOTER ─── */
+footer{
+padding:2.5rem 3rem;
+border-top:1px solid var(--border-light);
+background:var(--card-bg)
+}
+footer .footer-top{
+display:flex;
+justify-content:space-between;
+align-items:flex-start;
+flex-wrap:wrap;
+gap:2rem;
+margin-bottom:2rem
+}
+footer .logo-small{
+font-family:var(--font-display);
+font-weight:700;
+font-size:0.9rem;
+letter-spacing:0.2em;
+text-transform:uppercase
+}
+footer .logo-small span{color:var(--accent)}
+footer .footer-info{
+font-family:var(--font-mono);
+font-size:0.55rem;
+color:var(--text-muted);
+line-height:1.8
+}
+footer .footer-links{display:flex;gap:2rem}
+footer .footer-links a{font-size:0.7rem;color:var(--text-muted);text-transform:uppercase;letter-spacing:0.08em;transition:color 0.3s}
+footer .footer-links a:hover{color:var(--text)}
+footer .footer-disclaimer{
+font-family:var(--font-mono);
+font-size:0.5rem;
+color:var(--text-muted);
+opacity:0.6;
+text-align:center;
+padding-top:1.5rem;
+border-top:1px solid var(--border-light);
+line-height:1.8
+}
+
+/* ─── RESPONSIVE ─── */
+@media(max-width:1024px){
+.split{grid-template-columns:1fr}
+.split-seller{border-left:none;border-top:1px solid var(--border-light)}
+.split-half{padding:4rem 2.5rem}
+.market-grid{grid-template-columns:1fr 1fr}
+.steps-grid{grid-template-columns:1fr;gap:2rem}
+}
+@media(max-width:768px){
+nav{padding:1rem 1.5rem}
+nav .nav-links{display:none}
+.nav-ref{display:none}
+section{padding:5rem 1.5rem}
+.hero{padding:6rem 1.5rem 0}
+.market-grid{grid-template-columns:1fr}
+.grid-products{grid-template-columns:1fr}
+.ekg-footer{padding:0.5rem 1.5rem 1rem;flex-direction:column;gap:0.25rem}
+.ticker-header{padding:0 1.5rem 1rem}
+footer .footer-top{flex-direction:column;align-items:center;text-align:center}
+footer .footer-links{justify-content:center}
+}
+@media(max-width:480px){
+.hero-title{font-size:clamp(2rem,12vw,2.8rem)}
+.hero-actions{flex-direction:column;align-items:stretch}
+.btn{justify-content:center}
+.split-half{padding:3rem 1.5rem}
+}
+</style>
+</head>
+<body>
+
+<!-- ─── NAV ─── -->
+<nav>
+<a href="#" class="logo">FRAG<span>M</span>ENT</a>
+<div class="nav-links">
+<a href="#marche">Observations</a>
+<a href="#catalogue">Catalogue</a>
+<a href="#protocole">Protocole</a>
+<a href="#cas">Cas cliniques</a>
+<span class="nav-ref">Agrément FR-2847-A</span>
+<a href="#cta" class="nav-cta">Consultation</a>
+</div>
+</nav>
+
+<!-- ─── HERO ─── -->
+<section class="hero" id="top">
+<div class="hero-inner">
+<div class="hero-badge" data-reveal>
+<span class="hero-badge-dot"></span>
+PROTOCOLE D'EXTRACTION NEURALE — v2.4.1
+</div>
+<h1 class="hero-title" data-reveal>Vos souvenirs<br>en <em>bourse</em>.</h1>
+<p class="hero-sub" data-reveal>
+FRAGMENT est le premier établissement agréé de valorisation et d'extraction de mémoire. Procédure indolore. Résultats irréversibles.
+</p>
+<div class="hero-actions" data-reveal>
+<a href="#catalogue" class="btn btn-primary">Consulter le catalogue</a>
+<a href="#protocole" class="btn btn-secondary">Déroulement</a>
+</div>
+</div>
+<div class="ekg-strip">
+<canvas id="ekgCanvas"></canvas>
+<div class="ekg-footer">
+<span>Surveillance en temps réel — Réf: MON-2847</span>
+<span>Fréquence : <span id="ekgBPM">72</span> BPM</span>
+</div>
+</div>
+</section>
+
+<!-- ─── MARKET ─── -->
+<section class="market" id="marche">
+<div class="container">
+<span class="section-label" data-reveal>Observations du marché</span>
+<h2 class="section-title" data-reveal>État des lieux</h2>
+<p class="section-sub" data-reveal>
+Chaque fragment de mémoire possède une valeur patrimoniale. Notre indice FRAGX suit l'évolution du marché en continu.
+</p>
+<div class="market-grid" data-reveal-stagger>
+<div class="stat-card">
+<div class="stat-value">2 340</div>
+<div class="stat-unit">€</div>
+<div class="stat-label">Prix moyen constaté</div>
+<div class="stat-change up">▲ +8,3 %</div>
+</div>
+<div class="stat-card">
+<div class="stat-value">12,4</div>
+<div class="stat-unit">% vol.</div>
+<div class="stat-label">Volatilité indice émotionnel</div>
+<div class="stat-change up">▲ +2,1 %</div>
+</div>
+<div class="stat-card">
+<div class="stat-value">8 942</div>
+<div class="stat-unit">pts</div>
+<div class="stat-label">Indice FRAGX</div>
+<div class="stat-change down">▼ −0,7 %</div>
+</div>
+</div>
+</div>
+</section>
+
+<!-- ─── CATALOGUE ─── -->
+<section class="catalogue" id="catalogue">
+<div class="container">
+<span class="section-label" data-reveal>Catalogue</span>
+<h2 class="section-title" data-reveal>Souvenirs disponibles</h2>
+<p class="section-sub" data-reveal>
+Sélection de fragments extraits et authentifiés. Chaque acquisition inclut un rapport d'authenticité et une garantie de congruence émotionnelle.
+</p>
+<div class="filter-bar" data-reveal>
+<button class="filter-btn active" data-filter="all">Tous</button>
+<button class="filter-btn" data-filter="enfance">Enfance</button>
+<button class="filter-btn" data-filter="amour">Amour</button>
+<button class="filter-btn" data-filter="triomphe">Triomphe</button>
+<button class="filter-btn" data-filter="nostalgie">Nostalgie</button>
+<button class="filter-btn" data-filter="extase">Extase</button>
+</div>
+<div class="grid-products" id="productGrid" data-reveal-stagger></div>
+</div>
+</section>
+
+<!-- ─── HOW ─── -->
+<section class="how" id="protocole">
+<div class="container">
+<span class="section-label" data-reveal>Protocole médical</span>
+<h2 class="section-title" data-reveal>Extraire · Vendre · Vivre</h2>
+<p class="section-sub" data-reveal>
+Trois étapes. Une transformation irréversible. Protocole validé par l'Agence Nationale de Sécurité Neuronale (ANSN).
+</p>
+<div class="steps-grid" data-reveal-stagger>
+<div class="step">
+<div class="step-number">Phase 01</div>
+<h3 class="step-title"><em>Extraire</em></h3>
+<p class="step-desc">Séance d'extraction assistée par IA sous monitoring continu. Procédure ambulatorire de 15 minutes. Taux de succès : 99,7 %. Effets secondaires possibles : sensation de vide transitoire.</p>
+</div>
+<div class="step">
+<div class="step-number">Phase 02</div>
+<h3 class="step-title"><em>Vendre</em></h3>
+<p class="step-desc">Mise en vente aux enchères ou à prix fixe sur notre marché régulé. Certification de l'authenticité par scan neuronal. Notre algorithme de pricing garantit la valorisation optimale de votre fragment.</p>
+</div>
+<div class="step">
+<div class="step-number">Phase 03</div>
+<h3 class="step-title"><em>Vivre</em></h3>
+<p class="step-desc">Réception et immersion en réalité neurale. Le souvenir est restitué à l'identique, avec l'intégralité de sa charge émotionnelle. Note moyenne de satisfaction : 4,8 / 5.</p>
+</div>
+</div>
+</div>
+</section>
+
+<!-- ─── SPLIT ─── -->
+<section class="split" id="cas">
+<div class="split-half split-buyer" data-reveal>
+<span class="split-label">CAS N° 7284 — ACQUISITION</span>
+<div class="split-id">Souvenir : Coucher de soleil à Santorin · 12.04.2026</div>
+<div class="split-quote">Je n'y suis jamais allé, mais je l'ai vu. Vraiment vu. La chaleur du soleil, le sel sur ma peau, le rire de quelqu'un à côté de moi. C'était à moi. Pendant 4 minutes 28 secondes, ce souvenir était le mien.</div>
+<div class="split-meta">Patient M. — 42 ans · Paris · Acquisition unique</div>
+<div class="split-metric">+97 %</div>
+<div class="split-metric-label">Satisfaction constatée</div>
+</div>
+<div class="split-half split-seller" data-reveal>
+<span class="split-label">CAS N° 7291 — CESSION</span>
+<div class="split-id">Souvenir : Naissance de ma fille · 03.03.2026</div>
+<div class="split-quote">J'ai cédé le souvenir de la naissance de ma fille pour financer ses soins. La somme a été versée sous 48 heures. Mais quand elle rit aujourd'hui, je cherche dans ma mémoire un son qui n'existe plus.</div>
+<div class="split-meta">Patiente E. — 29 ans · Lyon · Cession définitive</div>
+<div class="split-metric">−100 %</div>
+<div class="split-metric-label">Souvenir perdu · Irréversible</div>
+</div>
+</section>
+
+<!-- ─── TICKER ─── -->
+<section class="ticker-section">
+<div class="ticker-header">
+<h3><span>●</span> Transactions en direct</h3>
+<span class="ticker-count">12 458 échanges aujourd'hui</span>
+</div>
+<div class="ticker-wrap">
+<div class="ticker-track" id="tickerTrack"></div>
+</div>
+</section>
+
+<!-- ─── CTA ─── -->
+<section class="cta-section" id="cta">
+<div class="container">
+<h2 class="cta-title" data-reveal>Réservez votre consultation</h2>
+<p class="cta-sub" data-reveal>
+47 000 patients nous ont déjà confié leurs souvenirs. Notre équipe médicale vous reçoit sous 48 heures.
+</p>
+<button class="btn-cta" id="magneticBtn" data-reveal>
+<span>Demander un entretien</span>
+</button>
+<p class="cta-disclaimer" data-reveal>
+* L'extraction de souvenir est une procédure définitive et irréversible. Un entretien préalable avec un spécialiste est obligatoire. Résultats non garantis. Consultez notre notice d'information.
+</p>
+</div>
+</section>
+
+<!-- ─── FOOTER ─── -->
+<footer>
+<div class="footer-top">
+<div>
+<div class="logo-small">FRAG<span>M</span>ENT</div>
+<div class="footer-info">Établissement agréé ANSN · FR-2847-A<br>12 Rue du Docteur Blanche, 75016 Paris</div>
+</div>
+<div class="footer-links">
+<a href="#">Notice d'information</a>
+<a href="#">Protocole médical</a>
+<a href="#">Transparence</a>
+<a href="#">Contact</a>
+</div>
+</div>
+<div class="footer-disclaimer">
+FRAGMENT SAS — 2026. L'extraction de souvenir peut entraîner une perte émotionnelle définitive et irréversible. Une consultation préalable est obligatoire. Brevet FR-2026-0041892. Reproduction interdite.
+</div>
+</footer>
+
+<script>
+// ─── DATA ───
+const souvenirs = [
+{ref:"MEM-2847-A",name:"Premiers pas dans l'herbe",category:"enfance",price:1200,rating:5,status:"disponible",trend:"up",trendVal:"+4,2 %"},
+{ref:"MEM-2847-B",name:"Son premier regard",category:"amour",price:4500,rating:4,status:"disponible",trend:"up",trendVal:"+12,1 %"},
+{ref:"MEM-2847-C",name:"Extase mystique (rare)",category:"extase",price:500000,rating:5,status:"epuise",trend:"up",trendVal:"+89 %"},
+{ref:"MEM-2847-D",name:"La médaille d'or",category:"triomphe",price:12000,rating:4,status:"disponible",trend:"down",trendVal:"−2,3 %"},
+{ref:"MEM-2847-E",name:"Crépuscule à Santorin",category:"nostalgie",price:890,rating:3,status:"disponible",trend:"up",trendVal:"+1,7 %"},
+{ref:"MEM-2847-F",name:"Sa main dans la mienne",category:"amour",price:25000,rating:5,status:"encheres",trend:"up",trendVal:"+45 %"},
+{ref:"MEM-2847-G",name:"L'odeur du pain chaud",category:"enfance",price:650,rating:4,status:"disponible",trend:"down",trendVal:"−0,8 %"},
+{ref:"MEM-2847-H",name:"Le goût de la liberté",category:"triomphe",price:7800,rating:5,status:"disponible",trend:"up",trendVal:"+6,4 %"},
+{ref:"MEM-2847-I",name:"Dernière danse",category:"nostalgie",price:3400,rating:4,status:"disponible",trend:"up",trendVal:"+3,2 %"},
+];
+
+const tickerItems = [
+"Premiers pas dans l'herbe — 1 200 €", "Son premier regard — 4 500 €",
+"Extase mystique — 500 000 €", "Médaille d'or — 12 000 €",
+"Crépuscule à Santorin — 890 €", "Sa main dans la mienne — 25 000 €",
+"L'odeur du pain chaud — 650 €", "Le goût de la liberté — 7 800 €",
+"Dernière danse — 3 400 €", "Naissance sous les étoiles — 18 000 €",
+"Premier concert — 2 100 €", "Larmes de joie — 6 700 €",
+];
+
+// ─── EKG CANVAS ───
+(function initEKG(){
+const canvas = document.getElementById('ekgCanvas');
+if (!canvas) return;
+const ctx = canvas.getContext('2d');
+let w, h;
+const BPM = 72;
+
+function resize(){
+const parent = canvas.parentElement;
+w = canvas.width = parent.offsetWidth;
+h = canvas.height = 60;
+}
+resize();
+window.addEventListener('resize', resize);
+
+const bpmEl = document.getElementById('ekgBPM');
+
+class Heartbeat {
+constructor(){
+this.points = [];
+this.phase = 0;
+this.beatLength = Math.round(60 / BPM * 120);
+for (let i = 0; i < w; i++) this.points.push(h / 2);
+}
+
+ekgValue(t){
+const pos = ((t % 1) + 1) % 1;
+const mid = h / 2;
+const amp = h * 0.35;
+if (pos < 0.1) return mid;
+if (pos < 0.12) return mid + amp * 0.1;
+if (pos < 0.14) return mid - amp * 0.15;
+if (pos < 0.16) return mid + amp * 1.0;
+if (pos < 0.18) return mid - amp * 0.35;
+if (pos < 0.20) return mid + amp * 0.12;
+if (pos < 0.22) return mid;
+if (pos < 0.35) return mid + amp * 0.25 * Math.sin((pos - 0.22) / 0.13 * Math.PI);
+if (pos < 0.40) return mid + amp * 0.05 * Math.sin((pos - 0.35) / 0.05 * Math.PI * 2);
+return mid;
+}
+
+update(){
+this.phase += 0.003;
+if (this.phase > 1) this.phase -= 1;
+this.points.shift();
+this.points.push(this.ekgValue(this.phase));
+}
+
+draw(){
+ctx.clearRect(0, 0, w, h);
+ctx.beginPath();
+this.points.forEach((y, x) => {
+if (x === 0) ctx.moveTo(x, y);
+else ctx.lineTo(x, y);
+});
+ctx.strokeStyle = '#D4384A';
+ctx.lineWidth = 1.5;
+ctx.shadowColor = '#D4384A';
+ctx.shadowBlur = 4;
+ctx.stroke();
+ctx.beginPath();
+this.points.forEach((y, x) => {
+if (x === 0) ctx.moveTo(x, y);
+else ctx.lineTo(x, y);
+});
+ctx.strokeStyle = 'rgba(212,56,74,0.15)';
+ctx.lineWidth = 6;
+ctx.shadowBlur = 10;
+ctx.stroke();
+ctx.shadowBlur = 0;
+}
+}
+
+const ekg = new Heartbeat();
+let bpmCounter = 0;
+let lastBeat = 0;
+
+function animate(){
+ekg.update();
+ekg.draw();
+bpmCounter++;
+if (bpmCounter % 20 === 0 && bpmEl) {
+const variation = Math.round((Math.random() - 0.5) * 3);
+const display = Math.min(120, Math.max(55, BPM + variation));
+bpmEl.textContent = display;
+}
+requestAnimationFrame(animate);
+}
+animate();
+})();
+
+// ─── SCROLL REVEAL ───
+(function initReveal(){
+const obs = new IntersectionObserver((entries) => {
+entries.forEach(e => {
+if (e.isIntersecting) e.target.classList.add('revealed');
+});
+}, { threshold: 0.1 });
+document.querySelectorAll('[data-reveal], [data-reveal-stagger]').forEach(el => obs.observe(el));
+})();
+
+// ─── RENDER PRODUCTS ───
+(function renderProducts(){
+const grid = document.getElementById('productGrid');
+if (!grid) return;
+
+function render(filter = 'all'){
+grid.innerHTML = '';
+const filtered = filter === 'all' ? souvenirs : souvenirs.filter(s => s.category === filter);
+filtered.forEach(s => {
+const stars = '★★★★★'.split('').map((_, i) => `<span class="star${i < s.rating ? ' filled' : ''}">★</span>`).join('');
+let badge = '';
+if (s.status === 'epuise') badge = '<div class="product-badge epuise">Épuisé</div>';
+else if (s.status === 'encheres') badge = '<div class="product-badge encheres">Enchères</div>';
+const trendClass = s.trend === 'up' ? 'up' : 'down';
+const trendSign = s.trend === 'up' ? '▲' : '▼';
+const card = document.createElement('div');
+card.className = 'product-card';
+card.innerHTML = `
+<div class="product-ref">${s.ref}</div>
+${badge}
+<div class="product-category">${s.category}</div>
+<div class="product-name">${s.name}</div>
+<div class="product-rating">${stars}</div>
+<div class="product-footer">
+<div class="product-price">${s.price.toLocaleString('fr-FR')} <span>€</span></div>
+<div class="product-trend ${trendClass}">${trendSign} ${s.trendVal}</div>
+</div>
+`;
+grid.appendChild(card);
+});
+}
+render();
+
+document.querySelectorAll('.filter-btn').forEach(btn => {
+btn.addEventListener('click', () => {
+document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+btn.classList.add('active');
+render(btn.dataset.filter);
+});
+});
+})();
+
+// ─── TICKER ───
+(function initTicker(){
+const track = document.getElementById('tickerTrack');
+if (!track) return;
+const items = tickerItems.map(t => `<span class="ticker-item"><span class="sep">◆</span> ${t} <span class="price">VENDU</span></span>`).join('');
+track.innerHTML = items + items;
+})();
+
+// ─── MAGNETIC BUTTON ───
+(function initMagnetic(){
+const btn = document.getElementById('magneticBtn');
+if (!btn) return;
+btn.addEventListener('mousemove', (e) => {
+const rect = btn.getBoundingClientRect();
+const x = e.clientX - rect.left - rect.width / 2;
+const y = e.clientY - rect.top - rect.height / 2;
+btn.style.transform = `translate(${x * 0.12}px, ${y * 0.12}px)`;
+});
+btn.addEventListener('mouseleave', () => {
+btn.style.transform = 'translate(0,0)';
+});
+})();
+
+console.log('%c FRAGMENT ','background:#1A1A1A;color:#F5F5F0;font-size:18px;font-weight:bold;padding:8px 16px;border:1px solid #D4384A;font-family:Georgia,serif;letter-spacing:0.2em');
+console.log('%c Protocole d\'extraction neurale — v2.4.1 ','color:#8A8A86;font-size:11px;font-family:monospace;');
+console.log('%c ⚠️ L\'extraction de souvenir est une procédure définitive et irréversible. ','color:#D4384A;font-size:10px;font-family:monospace;');
+</script>
+</body>
+</html>
